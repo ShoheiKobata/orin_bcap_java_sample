@@ -26,19 +26,22 @@ public class IOControl {
 		try {
 			hCtrl = m_client.Controller_Connect("Ctrl", "CaoProv.DENSO.VRC", "localhost", "");
 			
-			/* Get variable(I[1]) handle */
+			/* Get variable(IO[128]) handle */
             int hIval = 0;
 			Object ret= 0;
             Boolean input_state = true;
             Boolean get_state = false;
 			
 			try {
-                hIval = m_client.Controller_GetVariable(hCtrl,"IO128","");
+				hIval = m_client.Controller_GetVariable(hCtrl,"IO128","");
+				/* Get IO value (On or Off)  */
 				ret = m_client.Variable_GetValue(hIval);
                 System.out.println("IO[128] = " + ret);
                 get_state = (Boolean)ret;
-                input_state =! get_state;
+				input_state =! get_state;
+				/* Set IO Value (reverse)  */
 				m_client.Variable_PutValue(hIval,input_state);
+				/*  Get IO Value */
 				ret = m_client.Variable_GetValue(hIval);
 				System.out.println("IO[128] = " +ret);
 			} catch(Throwable cause) {
